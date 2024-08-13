@@ -13,8 +13,8 @@ def calculate_ccv(zmk: str) -> str:
     zmk_bytes = unhexlify(zmk)
     
     # Ensure the ZMK length is either 16 bytes (double-length) or 24 bytes (triple-length)
-    if len(zmk_bytes) not in (16, 24):
-        raise ValueError("ZMK should be 16 or 24 bytes for double or triple-length keys.")
+    #if len(zmk_bytes) not in (16, 24):
+     #   raise ValueError("ZMK should be 16 or 24 bytes for double or triple-length keys.")
     
     # Use the first 8 bytes of zeros to calculate the ccv
     zeroes = bytes(8)
