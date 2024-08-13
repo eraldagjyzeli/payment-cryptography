@@ -5,23 +5,28 @@
 
 import hashlib
 import sys
-from Crypto.Cipher import AES
+from Crypto.Cipher import DES3
 from binascii import unhexlify, hexlify
-import boto3
 
-def calculate_ccv_aes(aes_key: str) -> str:
-    aes_key_bytes = unhexlify(aes_key)
+def calculate_ccv(zmk: str) -> str:
+    # Convert the ZMK from hex string to bytes
+    zmk_bytes = unhexlify(zmk)
     
-    if len(aes_key_bytes) not in (16, 24, 32):  # AES accepts 128, 192, 256-bit keys
-        raise ValueError("AES key should be 16, 24, or 32 bytes.")
-
-    zeroes = bytes(16)  # 16 bytes of zeroes for AES block size
-
-    cipher = AES.new(aes_key_bytes, AES.MODE_ECB)  # Initialize AES cipher in ECB mode
+    # Ensure the ZMK length is either 16 bytes (double-length) or 24 bytes (triple-length)
+    if len(zmk_bytes) not in (16, 24):
+        raise ValueError("ZMK should be 16 or 24 bytes for double or triple-length keys.")
     
-    ccv = cipher.encrypt(zeroes)  # Encrypt the zeroes
+    # Use the first 8 bytes of zeros to calculate the ccv
+    zeroes = bytes(8)
     
-    return hexlify(ccv[:3]).decode().upper()  # Return the first 3 bytes of resulting encryption
+    # Initialize the 3DES cipher with the ZMK in ECB mode
+    cipher = DES3.new(zmk_bytes, DES3.MODE_ECB)
+    
+    # Encrypt the zeroes
+    ccv = cipher.encrypt(zeroes)
+    
+    # Convert the first 3 bytes of the resulting encryption to a hexadecimal string
+    return hexlify(ccv[:3]).decode().upper()
 
 def xor_hex_strings(hex_str1, hex_str2):
     # Convert hex strings to byte arrays
@@ -48,7 +53,7 @@ if __name__ == "__main__":
         print("component: ", component)
         ccv_entered = input("Enter the CCV: ")
 
-        ccv_value = calculate_ccv_aes(component)
+        ccv_value = calculate_ccv(component)
         print("CCV: ", ccv_value)
         if ccv_value == ccv_entered:
             print("CCV is valid.")
@@ -61,7 +66,7 @@ if __name__ == "__main__":
     xor_result = xor_hex_strings(zone_master_key_components[0], zone_master_key_components[1])
     zmk = xor_hex_strings(xor_result, zone_master_key_components[2])
     print("ZMK: ", zmk)
-    kcv_value = calculate_ccv_aes(zmk)
+    kcv_value = calculate_ccv(zmk)
     print("ZMK KCV: ", kcv_value)
 
     # Prompt the user to input Y or N to validate kcv_value
@@ -83,7 +88,7 @@ if __name__ == "__main__":
 
     # Prompt the user to enter PEK (ZPK) value
     pek_value = input(f"Enter ZPK (Zone Pin Key): ")
-    pek_kcv_value = calculate_ccv_aes(pek_value)
+    pek_kcv_value = calculate_ccv(pek_value)
     print("ZPK KCV: ", pek_kcv_valuekcv_value)
 
      # Prompt the user to input Y or N to validate kcv_value
