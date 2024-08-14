@@ -42,8 +42,8 @@ OID_SHA256 = bytes.fromhex('608648016503040201')
 OID_DES_EDE3_CBC =   bytes.fromhex('2A864886F70D0307')
 OID_AES_AES128_CBC = bytes.fromhex('608648016503040102')
 
-OID_ENCRYPTION = OID_DES_EDE3_CBC
-BLOCK_SIZE = 8
+OID_ENCRYPTION = OID_AES_AES128_CBC
+BLOCK_SIZE = 16
 
 
 OID_PKCS7_DATA = bytes.fromhex('2A864886F70D010701')
@@ -339,7 +339,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Encrypt Key Block
     ###########################################################
 
-    tr34_key_block_cipher = DES3.new(ephemeral_key, DES3.MODE_CBC, key_block_iv)
+    tr34_key_block_cipher = AES.new(ephemeral_key, AES.MODE_CBC, key_block_iv)
 
 
 
@@ -523,7 +523,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
         print('Imported Key: ' + symmetric_key_binary.hex())
         print('Key Arn: ' + imported_symmetric_key_res['Key']['KeyArn'])
         print('Reported KCV: ' + imported_symmetric_key_res['Key']['KeyCheckValue'])
-        print('Calculated KCV: ' + DES3.new(symmetric_key_binary, DES3.MODE_ECB).encrypt(bytes.fromhex('0000000000000000'))[:3].hex().upper())
+        print('Calculated KCV: ' + AES.new(symmetric_key_binary, AES.MODE_ECB).encrypt(bytes.fromhex('0000000000000000'))[:3].hex().upper())
         print('Reported Type: ' + imported_symmetric_key_res['Key']['KeyAttributes']['KeyAlgorithm'])
 
         return imported_symmetric_key_res['Key']['KeyArn'],IMPORT_KEY_ALIAS
