@@ -18,6 +18,7 @@ def calculate_ccv_aes(aes_key: str) -> str:
     zeroes = bytes(16)  # 16 bytes of zeroes for AES block size
 
     cipher = AES.new(aes_key_bytes, AES.MODE_ECB)  # Initialize AES cipher in ECB mode
+    cipher.block_size = 128
     
     ccv = cipher.encrypt(zeroes)  # Encrypt the zeroes
     
