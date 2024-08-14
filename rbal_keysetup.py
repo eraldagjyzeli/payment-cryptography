@@ -5,13 +5,13 @@
 
 import hashlib
 import sys
-from Crypto.CMAC import CMAC
+from Crypto.Hash import CMAC
 from Crypto.Cipher import AES
 from binascii import unhexlify, hexlify
 import boto3
 
 def generate_cmac_b(message, key):
-    c = CMAC.new(key, ciphermod=AES)  # Make sure this line is indented with 4 spaces
+    c = CMAC.new(key, ciphermod=AES)
     c.update(message)
     return c.digest().hex()
 
