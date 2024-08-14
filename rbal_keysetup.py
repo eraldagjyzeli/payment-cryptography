@@ -11,9 +11,9 @@ from binascii import unhexlify, hexlify
 import boto3
 
 def generate_cmac_b(message, key):
-c = CMAC.new(key, ciphermod=AES)
-c.update(message)
-return c.digest().hex()
+    c = CMAC.new(key, ciphermod=AES)
+    c.update(message)
+    return c.digest().hex()
 
 def calculate_ccv_aes(aes_key: str) -> str:
     message = bytes.fromhex("00000000000000000000000000000000")
