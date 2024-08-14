@@ -10,19 +10,9 @@ from binascii import unhexlify, hexlify
 import boto3
 
 def calculate_ccv_aes(aes_key: str) -> str:
-    aes_key_bytes = unhexlify(aes_key)
-    
-    if len(aes_key_bytes) not in (16, 24, 32):  # AES accepts 128, 192, 256-bit keys
-        raise ValueError("AES key should be 16, 24, or 32 bytes.")
-
-    zeroes = bytes(16)  # 16 bytes of zeroes for AES block size
-
-    cipher = AES.new(aes_key_bytes, AES.MODE_ECB)  # Initialize AES cipher in ECB mode
-    cipher.block_size = 128
-    
-    ccv = cipher.encrypt(zeroes)  # Encrypt the zeroes
-    
-    return hexlify(ccv[:3]).decode().upper()  # Return the first 3 bytes of resulting encryption
+    message = bytes.fromhex("00000000000000000000000000000000")
+   kcv = generate_cmac_b(message, bytes.fromhex(key_ach))
+   return kcv.hex().upper()[0:6]
 
 def xor_hex_strings(hex_str1, hex_str2):
     # Convert hex strings to byte arrays
