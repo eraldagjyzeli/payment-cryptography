@@ -5,7 +5,7 @@
 
 import hashlib
 import sys
-from Crypto.CMAC import CMAC
+from Crypto.Hash import CMAC
 from Crypto.Cipher import AES
 from binascii import unhexlify, hexlify
 import boto3
@@ -18,7 +18,7 @@ def generate_cmac_b(message, key):
 def calculate_ccv_aes(aes_key: str) -> str:
     message = bytes.fromhex("00000000000000000000000000000000")
     kcv = generate_cmac_b(message, bytes.fromhex(aes_key))
-    return kcv.hex().upper()[0:6]
+    return kcv.upper()[0:6]
 
 def xor_hex_strings(hex_str1, hex_str2):
     # Convert hex strings to byte arrays
@@ -212,3 +212,4 @@ if __name__ == "__main__":
         print("")
         print("*********Done*********")
         print("")
+
