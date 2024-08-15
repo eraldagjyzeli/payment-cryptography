@@ -43,7 +43,7 @@ OID_DES_EDE3_CBC =   bytes.fromhex('2A864886F70D0307')
 OID_AES_AES128_CBC = bytes.fromhex('608648016503040102')
 
 OID_ENCRYPTION = OID_AES_AES128_CBC
-BLOCK_SIZE = 16
+BLOCK_SIZE = 16  # AES block size
 
 
 OID_PKCS7_DATA = bytes.fromhex('2A864886F70D010701')
@@ -260,7 +260,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate a TDES_3DES key
     ###########################################################
     if (clearKey == None or clearKey == ""):
-        symmetric_key_binary = secrets.token_bytes(16)
+        symmetric_key_binary = secrets.token_bytes(32)  # 32 bytes for AES-256
     else:
         #TODO Validate input
         symmetric_key_binary = binascii.unhexlify(clearKey.replace(" ","")) #remove any spaces
@@ -269,7 +269,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate a Nonce
     ###########################################################
 
-    tr34_2pass_nonce = secrets.token_bytes(8)
+    tr34_2pass_nonce = secrets.token_bytes(16)  # 16 bytes for AES nonce
 
     ###########################################################
     # Fetch TR-34 Import Parameters
@@ -332,8 +332,8 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate ephemeral key and iv
     ###########################################################
 
-    key_block_iv = secrets.token_bytes(BLOCK_SIZE) #8 for 3DES
-    ephemeral_key = secrets.token_bytes(24) #24 for 3DES
+    key_block_iv = secrets.token_bytes(BLOCK_SIZE) #16 for AES
+    ephemeral_key = secrets.token_bytes(32) #32 for AES 256 bits
 
     ###########################################################
     # Encrypt Key Block
