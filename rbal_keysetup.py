@@ -89,8 +89,8 @@ if __name__ == "__main__":
 
     # Prompt the user to enter PEK (ZPK) value
     pek_value = input(f"Enter ZPK (Zone Pin Key): ")
-    pek_kcv_value = calculate_ccv(pek_value)
-    print("ZPK KCV: ", pek_kcv_valuekcv_value)
+    #pek_kcv_value = calculate_ccv(pek_value)
+    #print("ZPK KCV: ", pek_kcv_valuekcv_value)
     
      # Prompt the user to input Y or N to validate kcv_value
     user_input = input("Is ZPK KCV valid? (Y/N): ").strip().upper()
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     """ Pin Encryption Key. For the samples, the same key will be shared between ATM, Pin tranlation service and Issuer. 
     This is to show that ATM can directly talk to issuer service to set and verify pin. 
     ATM can also go through intermediate PinTranslateService which makes call to Issuer to set and verify Pin. """
-    PEK = 'B0096P0TE00E0000740F3483D8009BEF31D00DD09EE41A1FC378B925E44F674471C2277090BD3D3F1ABB2A79502442EB'
+    PEK = pek_value
     pinTranslateServicePekAlias = "alias/pinTranslateServicePek"
     issuerPekAlias = 'alias/issuerPek'
 
