@@ -64,8 +64,9 @@ if __name__ == "__main__":
    #    #print("zone_master_key_components: ", zone_master_key_components)
    #
    #xor_result = xor_hex_strings(zone_master_key_components[0], zone_master_key_components[1])
-    zmk = input(f"Enter the Zone Master Key: ") # xor_hex_strings(xor_result, zone_master_key_components[2])
-   # print("ZMK: ", zmk)
+    zmk_input = input(f"Enter the Zone Master Key: ") # xor_hex_strings(xor_result, zone_master_key_components[2])
+    zmk = zmk_input.hex().upper()
+    print("ZMK: ", zmk)
     kcv_value = calculate_ccv(zmk)
     print("ZMK KCV: ", kcv_value)
 
