@@ -170,52 +170,52 @@ if __name__ == "__main__":
         print("KEK/KPBK/ZMK ARN:",tr34_response[0])
 
 
-        print("")
-        print("*********Importing a BDK for DUKPT*********")
-        print("")
-        response = tr31.importTR31(KEK,BDK,"E","B0","X","T","ONLINE",tr34_response[0],None,bdkAlias)
-        print("BDK ARN:",response[0])
-        print("Alias",response[1])
-
-
-        print("")
-        print("*********Importing a PEK for communicating with ATM*********")
-        print("")
-        response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,pinTranslateServicePekAlias)
-        print("PEK(ATM PEK) ARN:",response[0])
-        print("Alias:",response[1])
-
-        print("")
-        print("*********Importing a PEK for Pin Translate Service to Issuer communication. This service sits between between issuer and ATM) *********")
-        print("")
-        response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,issuerPekAlias)
-        print("PEK(ATM PEK) ARN:",response[0])
-        print("Alias:",response[1])
-
-        print("")
-        print("*********Generating a PGK for generating a PVV*********")
-        print("")
-
-        response = GeneratePvk(issuerGenerationAlias)
-
-        print("Pin Verification Value ARN",response[0])
-        print("Pin Verification Value Alias",response[1])
-
-        print("")
-        print("*********Generating a MAC key for MAC verification********")
-        print("")
-
-        response =  tr34.importTr34("ONLINE",MAC,"E","M3","C","")
-
-        try:
-            alias_res = apc_client.get_alias(AliasName=macAlias)
-        except apc_client.exceptions.ResourceNotFoundException:
-            alias_res = apc_client.create_alias(AliasName=macAlias)
-
-        
-        macResponse = apc_client.update_alias(AliasName=macAlias,KeyArn=response[0])
-        print("MAC Key Alias:",macResponse['Alias']['AliasName'])
-        print("MAC Key ARN:",macResponse['Alias']['KeyArn'])
+      #print("")
+      #print("*********Importing a BDK for DUKPT*********")
+      #print("")
+      #response = tr31.importTR31(KEK,BDK,"E","B0","X","T","ONLINE",tr34_response[0],None,bdkAlias)
+      #print("BDK ARN:",response[0])
+      #print("Alias",response[1])
+      #
+      #
+      #print("")
+      #print("*********Importing a PEK for communicating with ATM*********")
+      #print("")
+      #response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,pinTranslateServicePekAlias)
+      #print("PEK(ATM PEK) ARN:",response[0])
+      #print("Alias:",response[1])
+      #
+      #print("")
+      #print("*********Importing a PEK for Pin Translate Service to Issuer communication. This service sits between between issuer and ATM) *********")
+      #print("")
+      #response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,issuerPekAlias)
+      #print("PEK(ATM PEK) ARN:",response[0])
+      #print("Alias:",response[1])
+      #
+      #print("")
+      #print("*********Generating a PGK for generating a PVV*********")
+      #print("")
+      #
+      #response = GeneratePvk(issuerGenerationAlias)
+      #
+      #print("Pin Verification Value ARN",response[0])
+      #print("Pin Verification Value Alias",response[1])
+      #
+      #print("")
+      #print("*********Generating a MAC key for MAC verification********")
+      #print("")
+      #
+      #response =  tr34.importTr34("ONLINE",MAC,"E","M3","C","")
+      #
+      #try:
+      #    alias_res = apc_client.get_alias(AliasName=macAlias)
+      #except apc_client.exceptions.ResourceNotFoundException:
+      #    alias_res = apc_client.create_alias(AliasName=macAlias)
+      #
+      #
+      #macResponse = apc_client.update_alias(AliasName=macAlias,KeyArn=response[0])
+      #print("MAC Key Alias:",macResponse['Alias']['AliasName'])
+      #print("MAC Key ARN:",macResponse['Alias']['KeyArn'])
 
         
         print("")
