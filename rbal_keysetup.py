@@ -186,12 +186,12 @@ if __name__ == "__main__":
       #print("PEK(ATM PEK) ARN:",response[0])
       #print("Alias:",response[1])
       #
-      print("")
-      print("*********Importing a PEK for Pin Translate Service to Issuer communication. This service sits between between issuer and ATM) *********")
-      print("")
-      response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,issuerPekAlias)
-      print("PEK(ATM PEK) ARN:",response[0])
-      print("Alias:",response[1])
+        print("")
+        print("*********Importing a PEK for Pin Translate Service to Issuer communication. This service sits between between issuer and ATM) *********")
+        print("")
+        response = tr31.importTR31a(KEK,PEK,"E","P0","B","T","ONLINE",tr34_response[0],None,issuerPekAlias)
+        print("PEK(ATM PEK) ARN:",response[0])
+        print("Alias:",response[1])
       
       #print("")
       #print("*********Generating a PGK for generating a PVV*********")
@@ -222,4 +222,3 @@ if __name__ == "__main__":
         print("")
         print("*********Done*********")
         print("")
-
