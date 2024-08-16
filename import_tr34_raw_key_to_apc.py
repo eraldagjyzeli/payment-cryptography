@@ -42,8 +42,8 @@ OID_SHA256 = bytes.fromhex('608648016503040201')
 OID_DES_EDE3_CBC =   bytes.fromhex('2A864886F70D0307')
 OID_AES_AES128_CBC = bytes.fromhex('608648016503040102')
 
-OID_ENCRYPTION = OID_AES_AES128_CBC
-BLOCK_SIZE = 16  # AES block size
+OID_ENCRYPTION = OID_DES_EDE3_CBC
+BLOCK_SIZE = 8
 
 
 OID_PKCS7_DATA = bytes.fromhex('2A864886F70D010701')
@@ -260,7 +260,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate a TDES_3DES key
     ###########################################################
     if (clearKey == None or clearKey == ""):
-        symmetric_key_binary = secrets.token_bytes(32)  # 32 bytes for AES-256
+        symmetric_key_binary = secrets.token_bytes(16)
     else:
         #TODO Validate input
         symmetric_key_binary = binascii.unhexlify(clearKey.replace(" ","")) #remove any spaces
@@ -269,7 +269,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate a Nonce
     ###########################################################
 
-    tr34_2pass_nonce = secrets.token_bytes(16)  # 16 bytes for AES nonce
+    tr34_2pass_nonce = secrets.token_bytes(8)
 
     ###########################################################
     # Fetch TR-34 Import Parameters
@@ -332,14 +332,14 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
     # Generate ephemeral key and iv
     ###########################################################
 
-    key_block_iv = secrets.token_bytes(BLOCK_SIZE) #16 for AES
-    ephemeral_key = secrets.token_bytes(32) #32 for AES 256 bits
+    key_block_iv = secrets.token_bytes(BLOCK_SIZE) #8 for 3DES
+    ephemeral_key = secrets.token_bytes(24) #24 for 3DES
 
     ###########################################################
     # Encrypt Key Block
     ###########################################################
 
-    tr34_key_block_cipher = AES.new(ephemeral_key, AES.MODE_CBC, key_block_iv)
+    tr34_key_block_cipher = DES3.new(ephemeral_key, DES3.MODE_CBC, key_block_iv)
 
 
 
@@ -523,7 +523,7 @@ def importTr34(runMode,clearKey,exportMode,keyType,modeOfUse,region,krdCert="",A
         print('Imported Key: ' + symmetric_key_binary.hex())
         print('Key Arn: ' + imported_symmetric_key_res['Key']['KeyArn'])
         print('Reported KCV: ' + imported_symmetric_key_res['Key']['KeyCheckValue'])
-        print('Calculated KCV: ' + AES.new(symmetric_key_binary, AES.MODE_ECB).encrypt(bytes.fromhex('0000000000000000'))[:3].hex().upper())
+        print('Calculated KCV: ' + DES3.new(symmetric_key_binary, DES3.MODE_ECB).encrypt(bytes.fromhex('0000000000000000'))[:3].hex().upper())
         print('Reported Type: ' + imported_symmetric_key_res['Key']['KeyAttributes']['KeyAlgorithm'])
 
         return imported_symmetric_key_res['Key']['KeyArn'],IMPORT_KEY_ALIAS
