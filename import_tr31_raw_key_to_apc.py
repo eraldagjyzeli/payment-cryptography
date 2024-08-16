@@ -11,15 +11,15 @@ import argparse
 
 def constructTr31Header(algo,exportMode,keyType,modeOfUse):
 
-    versionID = 'D' #version B is supported also but it requires kbpk to be 3DES as well
+    versionID = 'B' #version D is supported also but it requires kbpk to be AES as well
     length = '9999' #this library will overwrite it with the correct value
 
     header = versionID + length + keyType + algo + modeOfUse + "00" + exportMode + "0000"
 
     header = psec.tr31.Header(
-        version_id=versionID,     # Version D as recommended for aes
+        version_id=versionID,     # Version B as recommended for TDES
         key_usage=keyType,     # PIN Encryption
-        algorithm=algo,      # AES
+        algorithm=algo,      # TDES
         mode_of_use=modeOfUse,    # Encryption only
         version_num="00",   # No version
         exportability=exportMode
@@ -79,7 +79,7 @@ def importTR31(kbpk_clearkey,wk_clearkey,exportmode,keytype,modeofuse,algorithm,
 if __name__ == "__main__":
 
     print ("Sample code to encrypt a key in TR-31 format and import it into AWS Payment Cryptography")
-    print ("This code assumes the key encryption key (KEK, KBPK, ZCMK) is AES but the key to import can be 3DES or AES.")
+    print ("This code assumes the key encryption key (KEK, KBPK, ZCMK) is 3DES but the key to import can be 3DES or AES.")
     print ("Can be run in the default mode where it generates the payload and directly makes all required service calls OR ")
     print ("can be run in offline mode where you can import the payload later on.")
 
@@ -175,7 +175,7 @@ def importTR31a(kbpk_clearkey,wk_clearkey,exportmode,keytype,modeofuse,algorithm
 if __name__ == "__main__":
 
     print ("Sample code to encrypt a key in TR-31 format and import it into AWS Payment Cryptography")
-    print ("This code assumes the key encryption key (KEK, KBPK, ZCMK) is AES but the key to import can be 3DES or AES.")
+    print ("This code assumes the key encryption key (KEK, KBPK, ZCMK) is 3DES but the key to import can be 3DES or AES.")
     print ("Can be run in the default mode where it generates the payload and directly makes all required service calls OR ")
     print ("can be run in offline mode where you can import the payload later on.")
 
@@ -218,5 +218,3 @@ if __name__ == "__main__":
 
 
         #print('TR-31 Payload:',wrappedKey)
-
-
