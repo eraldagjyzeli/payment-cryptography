@@ -89,25 +89,25 @@ if __name__ == "__main__":
 
     # Prompt the user to enter PEK (ZPK) value
     pek_value = input(f"Enter ZPK (Zone Pin Key): ")
-    pek_kcv_value = calculate_ccv(pek_value)
-    print("ZPK KCV: ", pek_kcv_valuekcv_value)
-
-     # Prompt the user to input Y or N to validate kcv_value
-    user_input = input("Is ZPK KCV valid? (Y/N): ").strip().upper()
-
-    # Check the user's input
-    if user_input == 'Y':
-        # Continue with the rest of the code
-        print("kcv_value is valid. Continuing...")
-        # Your existing code here
-    elif user_input == 'N':
-        # Exit the program
-        print("kcv_value is not valid. Exiting...")
-        sys.exit(1)
-    else:
-        # Handle invalid input
-        print("Invalid input. Please enter Y or N.")
-        sys.exit(1)
+   #pek_kcv_value = calculate_ccv(pek_value)
+   #print("ZPK KCV: ", pek_kcv_valuekcv_value)
+   #
+   # # Prompt the user to input Y or N to validate kcv_value
+   #user_input = input("Is ZPK KCV valid? (Y/N): ").strip().upper()
+   #
+   ## Check the user's input
+   #if user_input == 'Y':
+   #    # Continue with the rest of the code
+   #    print("kcv_value is valid. Continuing...")
+   #    # Your existing code here
+   #elif user_input == 'N':
+   #    # Exit the program
+   #    print("kcv_value is not valid. Exiting...")
+   #    sys.exit(1)
+   #else:
+   #    # Handle invalid input
+   #    print("Invalid input. Please enter Y or N.")
+   #    sys.exit(1)
 
     """
     This script is intended to import all the keys needed for the AWS Payment Cryptography 
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         print("*********Importing a KEK for importing subsequent keys*********")
         print("")
 
-        tr34_response = tr34.importTr34("ONLINE",KEK,"E","K0","B","","")
+        tr34_response = tr34.importTr34("ONLINE",KEK,"E","K0","B","eu-central-1","")
         print("KEK/KPBK/ZMK ARN:",tr34_response[0])
 
 
