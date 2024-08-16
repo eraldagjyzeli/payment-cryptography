@@ -38,26 +38,27 @@ def xor_hex_strings(hex_str1, hex_str2):
     return xor_hex_str
 
 if __name__ == "__main__":
-    zone_master_key_components = []
-    for i in range(3):
-        component = input(f"Enter component {i+1} of the Zone Master Key: ")
-        component = component.replace(' ', '')
-        print("component: ", component)
-        ccv_entered = input("Enter the CCV: ")
-
-        ccv_value = calculate_ccv_aes(component)
-        print("CCV: ", ccv_value)
-        if ccv_value == ccv_entered:
-            print("CCV is valid.")
-        else:
-            print("CCV is invalid.")
-
-        zone_master_key_components.append(component)
-        #print("zone_master_key_components: ", zone_master_key_components)
-
-    xor_result = xor_hex_strings(zone_master_key_components[0], zone_master_key_components[1])
-    zmk = xor_hex_strings(xor_result, zone_master_key_components[2])
-    print("ZMK: ", zmk)
+   #zone_master_key_components = []
+   #for i in range(3):
+   #    component = input(f"Enter component {i+1} of the Zone Master Key: ")
+   #    component = component.replace(' ', '')
+   #    print("component: ", component)
+   #    ccv_entered = input("Enter the CCV: ")
+   #
+   #    ccv_value = calculate_ccv_aes(component)
+   #    print("CCV: ", ccv_value)
+   #    if ccv_value == ccv_entered:
+   #        print("CCV is valid.")
+   #    else:
+   #        print("CCV is invalid.")
+   #
+   #    zone_master_key_components.append(component)
+   #    #print("zone_master_key_components: ", zone_master_key_components)
+   #
+   #xor_result = xor_hex_strings(zone_master_key_components[0], zone_master_key_components[1])
+   # zmk = xor_hex_strings(xor_result, zone_master_key_components[2])
+   zmk = input(f"Enter the Zone Master Key: ")
+   # print("ZMK: ", zmk)
     kcv_value = calculate_ccv_aes(zmk)
     print("ZMK KCV: ", kcv_value)
 
@@ -212,4 +213,3 @@ if __name__ == "__main__":
         print("")
         print("*********Done*********")
         print("")
-
