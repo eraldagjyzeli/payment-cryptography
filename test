@@ -1,0 +1,41 @@
+ public async Task<string> TranslatePinAsync(AmazonPaymentCryptographyDataClient client, string pinBlock, string pan, string incomingKeyId, string outgoingKeyId)
+ {
+     try
+     {
+         var request = new TranslatePinDataRequest
+         {
+             EncryptedPinBlock = pinBlock,
+             IncomingKeyIdentifier = incomingKeyId,
+             IncomingTranslationAttributes = new TranslationIsoFormats
+             {
+                 IsoFormat0 = new TranslationPinDataIsoFormat034
+                 {
+                     PrimaryAccountNumber = pan
+                 }
+             },
+             OutgoingKeyIdentifier = outgoingKeyId,
+             OutgoingTranslationAttributes = new TranslationIsoFormats
+             {
+                 IsoFormat0 = new TranslationPinDataIsoFormat034()
+                 {
+                     PrimaryAccountNumber = pan
+                 }
+             }
+         };
+
+         var response = await client.TranslatePinDataAsync(request);
+         var translatedPinBlock = response.PinBlock;
+
+         return translatedPinBlock;
+     }
+     catch (Exception ex)
+     {
+         throw;
+     }
+ }
+
+
+aws payment-cryptography-data translate-pin-data --incoming-key-identifier alias/pek-key --outgoing-key-identifier alias/translate-key --incoming-translation-attributes IsoFormat0='{PrimaryAccountNumber=1234567890123456}' --outgoing-translation-attributes IsoFormat0='{PrimaryAccountNumber=1234567890123456}' --encrypted-pin-block "E45A71B9208EEADF"
+
+
+Amazon.PaymentCryptographyData.Model.ValidationException: Missing required parameter: “IncomingDukptAttributes”. at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionStream(IRequestContext requestContext, IWebResponseData httpErrorResponse, HttpErrorResponseException exception, Stream responseStream) at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionAsync(IExecutionContext executionContext, HttpErrorResponseException exception) at Amazon.Runtime.Internal.ExceptionHandler1.HandleAsync(IExecutionContext executionContext, Exception exception)
