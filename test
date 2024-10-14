@@ -1,3 +1,29 @@
+public string ExecuteShellCommand(string command)
+{
+    var process = new System.Diagnostics.Process();
+    process.StartInfo.FileName = "/bin/bash";
+    process.StartInfo.Arguments = $"-c \"{command}\"";
+    process.StartInfo.RedirectStandardOutput = true;
+    process.Start();
+    string result = process.StandardOutput.ReadToEnd();
+    process.WaitForExit();
+    return result;
+}
+
+public string TranslatePinUsingCLI(string pinBlock, string pan, string incomingKeyId, string outgoingKeyId)
+{
+    var command = $"aws payment-cryptography-data translate-pin-data " +
+                  $"--incoming-key-identifier {incomingKeyId} " +
+                  $"--outgoing-key-identifier {outgoingKeyId} " +
+                  $"--incoming-translation-attributes IsoFormat0='{{PrimaryAccountNumber={pan}}}' " +
+                  $"--outgoing-translation-attributes IsoFormat0='{{PrimaryAccountNumber={pan}}}' " +
+                  $"--encrypted-pin-block {pinBlock}";
+    return ExecuteShellCommand(command);
+}
+
+
+
+
  public async Task<string> TranslatePinAsync(AmazonPaymentCryptographyDataClient client, string pinBlock, string pan, string incomingKeyId, string outgoingKeyId)
  {
      try
